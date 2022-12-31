@@ -73,6 +73,8 @@ exports.acceptFriend = catchAsync(async (req, res) => {
     chat: chat._id,
     content: `You are now friends with ${friend.name}`,
   });
+  await Chat.findByIdAndUpdate(chat._id, {
+    latestMessage: message._id,});
   res.status(200).json({
     status: "success",
     data: {
