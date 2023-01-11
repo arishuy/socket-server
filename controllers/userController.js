@@ -5,6 +5,7 @@ const Chat = require("../models/chatModel");
 const Message = require("../models/messageModel");
 
 exports.getAllFriends = catchAsync(async (req, res) => {
+  conscons
   const friends = await User.findById(req.user._id)
     .populate("friends")
     .select("friends");
@@ -74,7 +75,8 @@ exports.acceptFriend = catchAsync(async (req, res) => {
     content: `You are now friends with ${friend.name}`,
   });
   await Chat.findByIdAndUpdate(chat._id, {
-    latestMessage: message._id,});
+    latestMessage: message._id,
+  });
   res.status(200).json({
     status: "success",
     data: {
@@ -136,6 +138,21 @@ exports.deleteFriendRequest = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     message: "Friend request deleted",
+  });
+});
+
+exports.getRegularContact = catchAsync(async (req, res, next) => {});
+
+exports.getTopThreeMessages = catchAsync(async (req, res, next) => {
+  console.log("a");
+  // const messages = await Message.find({ sender: req.user._id});
+  //   // .populate("sender")
+  //   // .sort({ createdAt: -1 })
+  //   // .limit(3);
+  // console.log(messages);
+  res.status(200).json({
+    status: "success",
+    data:"a",
   });
 });
 

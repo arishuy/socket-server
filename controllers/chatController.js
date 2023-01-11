@@ -27,7 +27,7 @@ exports.getAllChats = catchAsync(async (req, res) => {
 });
 
 exports.getChatById = catchAsync(async (req, res, next) => {
-  const chat = await Chat.findById(req.params.id).populate("latestMessage");
+  const chat = await Chat.findById(req.params.id).populate("latestMessage").populate("users");
   res.status(200).json({
     status: "success",
     data: {
