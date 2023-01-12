@@ -56,7 +56,6 @@ exports.getAllMessagesInChat = catchAsync(async (req, res, next) => {
 });
 
 exports.getTopThreeFriends = catchAsync(async (req, res, next) => {
-  //let topThree = await Message.find().populate("chat");
   const topThree = await Message.aggregate([
     {
       $match: {
@@ -64,9 +63,48 @@ exports.getTopThreeFriends = catchAsync(async (req, res, next) => {
       },
     },
     {
+      $lookup: {
+        from: "chats",
+        localField: "chat",
+        foreignField: "_id",
+        as: "chat",
+        pipeline: [
+          {
+            $match: {
+              isGroupChat: false,
+            },
+          },
+          {
+            $project: {
+              users: 1,
+            },
+          },
+          {
+            $lookup: {
+              from: "users",
+              localField: "users",
+              foreignField: "_id",
+              as: "users",
+            },
+          },
+          {
+            $project: {
+              users: {
+                $filter: {
+                  input: "$users",
+                  as: "users",
+                  cond: { $ne: ["$$users._id", req.user._id] },
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
       $group: {
-        _id:  "$chat",
-        count: { $sum: 1 }
+        _id: "$chat",
+        count: { $sum: 1 },
       },
     },
     {
@@ -74,17 +112,13 @@ exports.getTopThreeFriends = catchAsync(async (req, res, next) => {
         count: -1,
       },
     },
+    {
+      $limit: 3,
+    },
   ]);
-  //populate the chat
-  const top = await Promise.all(
-    topThree.map(async (item) => {
-      const chat = await Chat.findById
-        (item._id).populate("users");
-      return chat;
-    })
-  );
+  
   res.status(200).json({
     status: "success",
-    data: top,
+    data: topThree,
   });
 });
