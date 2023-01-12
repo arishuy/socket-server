@@ -1,9 +1,18 @@
 const Chat = require("../models/chatModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const Message = require("../models/messageModel");
 
 exports.createNewChat = catchAsync(async (req, res, next) => {
   const newChat = await Chat.create(req.body);
+  const message = await Message.create({
+    sender: req.user._id,
+    chat: newChat._id,
+    content: "Say hello to your new chat!",
+  })
+  await Chat.findByIdAndUpdate(newChat._id, {
+    latestMessage: message._id,
+  })
   res.status(201).json({
     status: "success",
     data: {
