@@ -141,19 +141,6 @@ exports.deleteFriendRequest = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getRegularContact = catchAsync(async (req, res, next) => {});
 
-exports.getTopThreeMessages = catchAsync(async (req, res, next) => {
-  console.log("a");
-  // const messages = await Message.find({ sender: req.user._id});
-  //   // .populate("sender")
-  //   // .sort({ createdAt: -1 })
-  //   // .limit(3);
-  // console.log(messages);
-  res.status(200).json({
-    status: "success",
-    data:"a",
-  });
-});
 
 //A add B // A nam trong waitingRequestFriends cua B // B nam trong waitingAcceptedFriends cua A

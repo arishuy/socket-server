@@ -17,7 +17,7 @@ exports.getAllChats = catchAsync(async (req, res) => {
   if (req.user) {
     query = { users: req.user };
   }
-  const chats = await Chat.find(query).populate("latestMessage").populate("users");
+  const chats = await Chat.find(query).populate("latestMessage").populate("users").sort({ updatedAt: -1 });
   res.status(200).json({
     status: "success",
     data: {

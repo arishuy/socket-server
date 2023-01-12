@@ -3,16 +3,17 @@ const Chat = require("../models/chatModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
-
 exports.createNewMessage = catchAsync(async (req, res, next) => {
   if (!req.body.sender) {
     req.body.sender = req.user._id;
   }
-  if (!req.body.chat) { 
+  if (!req.body.chat) {
     req.body.chat = req.params.chatId;
   }
   const message = await Message.create(req.body);
-  await Chat.findByIdAndUpdate(req.params.chatId, {latestMessage: message._id });
+  await Chat.findByIdAndUpdate(req.params.chatId, {
+    latestMessage: message._id,
+  });
   res.status(200).json({
     status: "success",
     data: {
@@ -45,11 +46,45 @@ exports.getMessageById = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllMessagesInChat = catchAsync(async (req, res, next) => {
-  const messages = await Message.find({ chat: req.params.chatId});
+  const messages = await Message.find({ chat: req.params.chatId });
   res.status(200).json({
     status: "success",
     data: {
       messages: messages,
     },
+  });
+});
+
+exports.getTopThreeFriends = catchAsync(async (req, res, next) => {
+  //let topThree = await Message.find().populate("chat");
+  const topThree = await Message.aggregate([
+    {
+      $match: {
+        sender: req.user._id,
+      },
+    },
+    {
+      $group: {
+        _id:  "$chat",
+        count: { $sum: 1 }
+      },
+    },
+    {
+      $sort: {
+        count: -1,
+      },
+    },
+  ]);
+  //populate the chat
+  const top = await Promise.all(
+    topThree.map(async (item) => {
+      const chat = await Chat.findById
+        (item._id).populate("users");
+      return chat;
+    })
+  );
+  res.status(200).json({
+    status: "success",
+    data: top,
   });
 });
