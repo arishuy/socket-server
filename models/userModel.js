@@ -39,7 +39,10 @@ const userSchema = mongoose.Schema(
       default:
         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
-    slug: { type: "String", unique: true },
+    slug: { type: "String",
+    default: "user",
+    unique: false,
+  },
     isAdmin: {
       type: Boolean,
       required: true,

@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-//const path = require("path");
 
 const userController = require("../controllers/userController");
 router.get("/:id",userController.getUserById);
@@ -10,6 +9,7 @@ router.post("/addFriend", userController.addNewFriend);
 router.post("/acceptFriend", userController.acceptFriend);
 router.post("/findUser", userController.FindUserByName);
 router.delete("/deleteFriendRequest/:id", userController.deleteFriendRequest);
+router.patch("/updateUser", userController.updateUser);
 
 
 module.exports = router;

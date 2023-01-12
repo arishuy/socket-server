@@ -4,8 +4,17 @@ const AppError = require("../utils/appError");
 const Chat = require("../models/chatModel");
 const Message = require("../models/messageModel");
 
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach((el) => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  }
+  );
+  return newObj;
+}
+
+
 exports.getAllFriends = catchAsync(async (req, res) => {
-  conscons
   const friends = await User.findById(req.user._id)
     .populate("friends")
     .select("friends");
@@ -140,6 +149,36 @@ exports.deleteFriendRequest = catchAsync(async (req, res, next) => {
     message: "Friend request deleted",
   });
 });
+
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const filteredBody = filterObj(req.body, "name", "email", "pic");
+  const user = await User.findByIdAndUpdate(req.user._id, filteredBody, {
+    new: true,
+    runValidators: true,
+    });
+  res.status(200).json({
+    status: "success",
+    data: {
+      user: user,
+    },
+  });
+});      
+
+
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const filteredBody = filterObj(req.body, "name", "email", "pic");
+  const user = await User.findByIdAndUpdate(req.user._id, filteredBody, {
+    new: true,
+    runValidators: true,
+    });
+  res.status(200).json({
+    status: "success",
+    data: {
+      user: user,
+    },
+  });
+});      
+
 
 
 
