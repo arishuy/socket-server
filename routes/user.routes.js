@@ -3,8 +3,8 @@ const router = express.Router();
 
 const userController = require("../controllers/userController");
 const User = require("../models/userModel");
-router.get("/:id",userController.getUserById);
 router.get("/friends", userController.getAllFriends);
+router.get("/:id",userController.getUserById);
 router.get("/getTopThreeMessages", userController.getTopThreeMessages);
 //router.get("/friendRequests", userController.getFriendRequestsByUserID);
 router.post("/addFriend", userController.addNewFriend);
