@@ -151,7 +151,7 @@ exports.deleteFriendRequest = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
-  const filteredBody = filterObj(req.body, "name", "email");
+  const filteredBody = filterObj(req.body, "name", "email", "pic");
   const user = await User.findByIdAndUpdate(req.user._id, filteredBody, {
     new: true,
     runValidators: true,
