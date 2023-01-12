@@ -165,19 +165,21 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 });      
 
 
-exports.getRegularContact = catchAsync(async (req, res, next) => {});
-
-exports.getTopThreeMessages = catchAsync(async (req, res, next) => {
-  console.log("a");
-  // const messages = await Message.find({ sender: req.user._id});
-  //   // .populate("sender")
-  //   // .sort({ createdAt: -1 })
-  //   // .limit(3);
-  // console.log(messages);
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const filteredBody = filterObj(req.body, "name", "email", "pic");
+  const user = await User.findByIdAndUpdate(req.user._id, filteredBody, {
+    new: true,
+    runValidators: true,
+    });
   res.status(200).json({
     status: "success",
-    data:"a",
+    data: {
+      user: user,
+    },
   });
-});
+});      
+
+
+
 
 //A add B // A nam trong waitingRequestFriends cua B // B nam trong waitingAcceptedFriends cua A

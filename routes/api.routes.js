@@ -6,7 +6,7 @@ const chatRoutes = require("./chat.routes");
 router.use("/chat", authController.protect, chatRoutes);
 
 const messageRoutes = require("./message.routes");
-router.use("/message", messageRoutes);
+router.use("/message",authController.protect, messageRoutes);
 
 const authRoutes = require("./auth.routes");
 router.use("/auth", authRoutes);

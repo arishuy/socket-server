@@ -9,6 +9,12 @@ const chatSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Message",
     },
+    pic: {
+      type: String,
+      trim: true,
+      default:
+        "https://i.pinimg.com/originals/5c/74/84/5c7484d8d8e9d93710148c56c4bf30cf.jpg",
+    },
     groupAdmin: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
