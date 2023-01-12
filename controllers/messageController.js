@@ -46,7 +46,7 @@ exports.getMessageById = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllMessagesInChat = catchAsync(async (req, res, next) => {
-  const messages = await Message.find({ chat: req.params.chatId }).sort({ createdAt: 1 }).limit(50);
+  const messages = await Message.find({ chat: req.params.chatId }).sort({ createdAt: -1 }).limit(50);
   res.status(200).json({
     status: "success",
     data: {
