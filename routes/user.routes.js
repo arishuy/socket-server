@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const userController = require("../controllers/userController");
+const User = require("../models/userModel");
 router.get("/friends", userController.getAllFriends);
 router.get("/:id",userController.getUserById);
 //router.get("/friendRequests", userController.getFriendRequestsByUserID);
