@@ -5,7 +5,6 @@ const Chat = require("../models/chatModel");
 const Message = require("../models/messageModel");
 
 exports.getAllFriends = catchAsync(async (req, res) => {
-  conscons
   const friends = await User.findById(req.user._id)
     .populate("friends")
     .select("friends");
@@ -140,6 +139,13 @@ exports.deleteFriendRequest = catchAsync(async (req, res, next) => {
     message: "Friend request deleted",
   });
 });
+
+exports.updateUser = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: "success",
+  });
+});      
+
 
 exports.getRegularContact = catchAsync(async (req, res, next) => {});
 
